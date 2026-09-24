@@ -1,5 +1,5 @@
 (ns preservecoord.actor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [preservecoord.actor :as actor]
             [preservecoord.store :as store]))
 
