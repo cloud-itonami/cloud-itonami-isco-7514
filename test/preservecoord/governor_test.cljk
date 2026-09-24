@@ -1,5 +1,5 @@
 (ns preservecoord.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [preservecoord.store :as store]
             [preservecoord.advisor :as advisor]
             [preservecoord.governor :as governor]))
