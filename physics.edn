@@ -1,0 +1,44 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a preservation-shop scheduling/logistics
+;; coordination robot handles crew scheduling, batch/inventory records and
+;; produce/jarring-materials supply orders for a fruit-and-vegetable
+;; preservation crew (ISCO 7514). Its physical work: hauling crates of produce
+;; to the prep line, draining the brine tank, and the boiling-water bath that
+;; brings a filled jar's centre up to processing temperature.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-7514"
+ :cases
+ [{:id :produce-crates-to-prep
+   :kind :transport
+   :procedure "cart hauls stacked crates of fruit and vegetables from goods-in to the prep line"
+   :params {:mass-kg 60.0 :distance-m 25.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :brake-decel-mps2 0.8 :drive-force-n 150.0 :crr 0.02
+            :cog-height-m 0.45 :support-half-length-m 0.30 :payload-cog-height-m 0.80
+            :max-time-s 1200.0}
+   :sweep {:param :payload-kg :values [20.0 60.0 120.0 200.0 320.0]}
+   :quantity :cycle-time-s
+   :limit {:max 40.0 :basis "estimate: one goods-in-to-prep leg while the line is running"}
+   :boundary {:lo 10.0 :hi 1500.0}}
+  {:id :brine-tank-drain
+   :kind :tank-drain
+   :procedure "brine tank (1.0 m2, 0.8 m deep) drains to the treatment sump between batches"
+   :params {:tank-area-m2 1.0 :h0-m 0.80 :h-target-m 0.03 :cd 0.62 :q-in-m3s 0.0}
+   :sweep {:param :orifice-area-m2 :values [0.0005 0.001 0.002 0.003 0.005]}
+   :quantity :time-to-target-s
+   :limit {:max 1200.0 :basis "estimate: brine change within the 20-minute changeover"}
+   :boundary {:lo 0.0001 :hi 0.01}}
+  {:id :jar-bath-centre
+   :kind :thermal
+   :procedure "a jar of fruit puree filled at 60 C sits in a boiling-water bath until its centre (insulated symmetry plane) reaches 90 C; the glass wall is not modelled"
+   :params {:thickness-m 0.035 :conductivity-w-mk 0.50 :density-kg-m3 1050.0 :specific-heat-j-kgk 3700.0
+            :t0-c 60.0 :t-hot-c 100.0 :h-front-w-m2k 500.0 :h-back-w-m2k 0.0 :t-back-ambient-c 100.0
+            :threshold-c 90.0 :duration-s 7200.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.015 0.02 0.025 0.035 0.045]}
+   :quantity :time-to-threshold-s
+   :limit {:max 1800.0 :basis "estimate: 30-minute bath slot; the validated process time for the product and jar size is the source to cite"}
+   :boundary {:lo 0.01 :hi 0.08}}]}
