@@ -1,7 +1,7 @@
 (ns preservecoord.store
   "SSoT for the ISCO-08 7514 fruit, vegetable and related preservers
   preservation-shop scheduling/logistics coordination actor (itonami
-  actor pattern, ADR-2607121000 / CLAUDE.md Actors section; README's
+  actor pattern, ADR-2607121000 / AGENTS.md Actors section; README's
   'Robotics premise' — a preservation-shop scheduling/logistics
   coordination robot performs crew scheduling, batch/inventory/
   progress-record logging and produce/jarring-materials supply-order
