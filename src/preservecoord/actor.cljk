@@ -1,7 +1,7 @@
 (ns preservecoord.actor
   "PreserveCoordActor — the ISCO-08 7514 fruit, vegetable and related
   preservers preservation-shop scheduling/logistics coordination actor
-  as a `langgraph.graph/state-graph` (ADR-2607121000 / CLAUDE.md
+  as a `langgraph.graph/state-graph` (ADR-2607121000 / AGENTS.md
   Actors section). One graph run = one preservation-shop-coordination
   operation request (intake -> advise -> govern -> decide ->
   commit/hold, with a human-approval interrupt for escalated
